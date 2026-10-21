@@ -18,7 +18,7 @@ custom code; auth is OAuth under your own identity.
 ## Install
 
 ```bash
-npx skills add <owner>/servicenow-query
+npx skills add AlexAlvarez092/servicenow-query
 ```
 
 Or copy `SKILL.md` into your agent's skills folder (e.g.

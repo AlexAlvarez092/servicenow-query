@@ -138,9 +138,10 @@ now-sdk query sys_properties -q 'name=glide.sys.date_format' -f 'name,value' -o 
 now-sdk query sys_flow_context -q 'state=Error^ORDERBYDESCsys_created_on' \
   -f 'name,state,error_message,sys_created_on' --limit 20 -o json -a <alias>
 
-# Recent error-level system log entries
-now-sdk query syslog -q 'level=2^ORDERBYDESCsys_created_on' \
-  -f 'sys_created_on,source,message'   --limit 20 -o json -a <alias>
+# Recent error-level system log entries. syslog is huge: always bound by time
+# and add --no-count, otherwise the request can time out
+now-sdk query syslog -q 'level=2^sys_created_on>javascript:gs.minutesAgoStart(60)^ORDERBYDESCsys_created_on' \
+  -f 'sys_created_on,source,message' --limit 20 --no-count -o json -a <alias>
 ```
 
 ## Typical workflow

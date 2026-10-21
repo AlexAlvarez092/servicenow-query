@@ -9,7 +9,8 @@
 
 ### Changed
 
-- Flags verified against `now-sdk` 4.13.6 `query --help`.
+- Flags verified against `now-sdk` 4.13.6 `query --help`; all recipes tested live.
+- `syslog` recipe now time-bounded with `--no-count` (unbounded query timed out).
 
 ## 1.0.0 - 2026-10-21
 

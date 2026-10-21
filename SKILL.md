@@ -4,7 +4,7 @@ description: Run read-only Table API queries against a live ServiceNow instance 
 license: MIT
 metadata:
   author: Alejandro Alvarez
-  version: "1.0"
+  version: "1.1"
 compatibility: Requires Node.js 20+ and the `@servicenow/sdk` CLI (`now-sdk` v4+, or via `npx`), one interactive OAuth sign-in per instance, and network access to the instance. Read-only (GET only).
 ---
 
@@ -45,6 +45,9 @@ the standard Table API (`/api/now/table/<table>`). No custom code to maintain.
    ```bash
    now-sdk auth --add https://<instance>.service-now.com --type oauth --alias <alias>
    ```
+
+   The URL may be a custom domain instead of `*.service-now.com`; use
+   whatever URL the user opens in the browser.
 
    Then re-run `now-sdk auth --list` and continue. Manage credentials with
    `now-sdk auth --use <alias>` and `now-sdk auth --delete <alias>`.
@@ -98,6 +101,9 @@ now-sdk query sys_user -q 'sys_id=javascript:gs.getUserID()' -f user_name,name -
 | `sys_ui_action` | UI Actions (`table`, `condition`, surfaces, `client` flag) |
 | `sys_script_include` | Script Includes |
 | `sys_user`, `sys_user_role`, `sys_scope` | Users, roles, application scopes |
+| `sys_properties` | System properties (`name`, `value`) |
+| `sys_flow_context` | Flow Designer execution contexts (`name`, `state`, `error_message`) |
+| `syslog` | System log (`level`, `source`, `message`) |
 
 ## Recipes
 
@@ -124,6 +130,17 @@ roleId=$(now-sdk query sys_user_role -q 'name=admin' -f sys_id \
 
 # Collision check before creating a record: records.length > 0 means it exists
 now-sdk query sys_script -q 'name=My Rule^collection=incident' -f sys_id -o json -a <alias>
+
+# System property value
+now-sdk query sys_properties -q 'name=glide.sys.date_format' -f 'name,value' -o json -a <alias>
+
+# Recent Flow Designer flow runs/errors (sys_flow_context)
+now-sdk query sys_flow_context -q 'state=Error^ORDERBYDESCsys_created_on' \
+  -f 'name,state,error_message,sys_created_on' --limit 20 -o json -a <alias>
+
+# Recent error-level system log entries
+now-sdk query syslog -q 'level=2^ORDERBYDESCsys_created_on' \
+  -f 'sys_created_on,source,message'   --limit 20 -o json -a <alias>
 ```
 
 ## Typical workflow

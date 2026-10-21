@@ -35,6 +35,9 @@ Or copy `SKILL.md` into your agent's skills folder (e.g.
 Read-only (GET only). The skill instructs agents to never query production
 without explicit user approval and never to reuse someone else's credentials.
 
+This skill is plain instructions (`SKILL.md`): no scripts or binaries are
+installed, and it stores no credentials (`now-sdk` manages its own).
+
 ## License
 
 MIT © Alejandro Alvarez

@@ -4,7 +4,7 @@ description: Run read-only Table API queries against a live ServiceNow instance 
 license: MIT
 metadata:
   author: Alejandro Alvarez
-  version: "1.1"
+  version: "1.1.1"
 compatibility: Requires Node.js 20+ and the `@servicenow/sdk` CLI (`now-sdk` v4+, or via `npx`), one interactive OAuth sign-in per instance, and network access to the instance. Read-only (GET only).
 ---
 
